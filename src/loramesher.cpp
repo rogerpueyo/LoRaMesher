@@ -19,7 +19,7 @@ LoraMesher::LoraMesher(){
   int res = radio->startReceive();
   if (res != 0) Log.error(F("Receiving on constructor gave error: %d" CR), res);
 
-  
+
 }
 
 LoraMesher::~LoraMesher(){

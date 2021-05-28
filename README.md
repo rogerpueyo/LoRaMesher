@@ -4,9 +4,9 @@ This library aims to implement a user firendly way to create a mesh network betw
 ## Dependencies
 You can check `library.json` for more details. Basically we use a modded version of [Radiolib](https://github.com/jgromes/RadioLib) that supports class methods as callbacks and [FreeRTOS](https://freertos.org/index.html) for scheduling maintenance tasks
 
+## Development
 ### Code Quality
-We are using [Astyle](http://astyle.sourceforge.net/) to make the code look the same. You need to run the following command after the first `git clone` in order to set the apropiate code checks:
+We are using [Clang Format](https://clang.llvm.org/docs/ClangFormat.html) to make the code look the same. In addition, we are using [Clang Format Hooks](https://github.com/barisione/clang-format-hooks) to ease the process of installing said hooks and have a nice command line interface to interact with the formater. The first time you clone this repository you need to run the following command on the root directory of the repository:
 ```bash
-git config  core.hookspath .githooks #For newer versions of git
-ln -s ../../.githooks/pre-commit.sh .git/hooks/pre-commit #For older versions of git
+./git-pre-commit-format install
 ```
