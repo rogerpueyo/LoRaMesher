@@ -1,4 +1,5 @@
 #include "loramesher.h"
+#include <functional>
 
 
 LoraMesher::LoraMesher(){
