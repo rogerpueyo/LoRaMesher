@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "thijse/ArduinoLog": "^1.0.3",
-    "sergimn/RadioLib": "https://github.com/sergimn/RadioLib.git"
+    "sergimn/RadioLib": "https://github.com/pellax/RadioLib.git"
   },
   "frameworks": "arduino",
   "platforms": "*"

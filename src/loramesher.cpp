@@ -1,5 +1,5 @@
 #include "loramesher.h"
-#include <functional>
+
 
 
 LoraMesher::LoraMesher(){
@@ -134,6 +134,8 @@ void LoraMesher::sendHelloPacket() {
 
 
 void LoraMesher::sendDataPacket() {
+  
+
 
   Log.trace(F("Sending DATA packet %d" CR), dataCounter);
   radio->clearDio0Action(); //For some reason, while transmitting packets, the interrupt pin is set with a ghost packet
