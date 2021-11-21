@@ -6,7 +6,7 @@
 // WiFi libraries
 #include <WiFi.h>
 
-
+#include "network/network.h"
 // Logger
 //#define DISABLE_LOGGING
 #include <ArduinoLog.h>
@@ -102,6 +102,7 @@ class LoraMesher{
           int32_t metric [20];
         };
         
+        Network minetwork;
         routableNode routingTable[RTMAXSIZE];
 
         byte localAddress;

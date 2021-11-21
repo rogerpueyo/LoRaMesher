@@ -19,7 +19,7 @@ LoraMesher::LoraMesher(){
   Log.verbose(F("Initiaization DONE, starting receiving packets..." CR));
   int res = radio->startReceive();
   if (res != 0) Log.error(F("Receiving on constructor gave error: %d" CR), res);
-
+  minetwork = new Network();
   
 }
 
