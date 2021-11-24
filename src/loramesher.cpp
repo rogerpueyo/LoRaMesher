@@ -20,6 +20,8 @@ LoraMesher::LoraMesher(){
   int res = radio->startReceive();
   if (res != 0) Log.error(F("Receiving on constructor gave error: %d" CR), res);
   minetwork = new Network();
+  minetwork -> buildClient(host,host2);
+
   
 }
 
@@ -101,6 +103,7 @@ void LoraMesher::sendHelloPacket() {
     Log.trace(F("Sending HELLO packet %d" CR), helloCounter);
     radio->clearDio0Action(); //For some reason, while transmitting packets, the interrupt pin is set with a ghost packet
     packet tx;
+    int resdata;
     tx.dst = broadcastAddress;
     tx.src = localAddress;
     tx.type = HELLO_P;
@@ -112,6 +115,8 @@ void LoraMesher::sendHelloPacket() {
       tx.address[i] = routingTable[i].address;
       tx.metric[i] = routingTable[i].metric;
     }
+   
+    
     Log.trace(F("About to transmit HELLO packet" CR));
     //TODO: Change this to startTransmit as a mitigation to the wdt error so we can raise the priority of the task. We'll have to look on how to start to listen for the radio again
     int res = radio->transmit((uint8_t *)&tx, sizeof(tx));
@@ -121,6 +126,7 @@ void LoraMesher::sendHelloPacket() {
     }
     else{
       Log.trace("HELLO packet sended" CR);
+     resdata = minetwork -> doPostDataPacket((String)tx.dst,(String)tx.src,(String)tx.type,(String)tx.payload,(String)tx.sizExtra,(String*)tx.address,(String*)tx.metric);
     }
     helloCounter++;
 
@@ -139,7 +145,7 @@ void LoraMesher::sendDataPacket() {
 
   Log.trace(F("Sending DATA packet %d" CR), dataCounter);
   radio->clearDio0Action(); //For some reason, while transmitting packets, the interrupt pin is set with a ghost packet
-
+  int resdata;
   packet tx;
   tx.dst = broadcastAddress;
   tx.src = localAddress;
@@ -153,6 +159,8 @@ void LoraMesher::sendDataPacket() {
   }
   else{
     Log.trace("Data packet sended" CR);
+    resdata = minetwork -> doPostDataPacket((String)tx.dst,(String)tx.src,(String)tx.type,(String)tx.payload,"0",NULL,NULL);
+   
   }
 
   dataCounter++;
@@ -283,7 +291,9 @@ void LoraMesher::addNeighborToRoutingTable(byte neighborAddress, int helloID) {
       routingTable[i].timeout = micros() + routeTimeout;
       routingTable[i].via = localAddress;
       Log.verbose(F("New neighbor added in position %d" CR), i);
+      minetwork -> doPostRoutingTable((String)routingTable[i].address,(String)routingTable[i].metric,(String)routingTable[i].lastSeqNo,(String)routingTable[i].timeout,(String)routingTable[i].via);
       break;
+
     }
   }
 }

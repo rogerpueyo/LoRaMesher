@@ -102,9 +102,10 @@ class LoraMesher{
           int32_t metric [20];
         };
         
-        Network minetwork;
+        Network* minetwork;
         routableNode routingTable[RTMAXSIZE];
-
+        const char* host  = "192.168.1.60:40350/send_DataPacket";
+        const char* host2 = "192.168.1.60:4035/send_RoutingTable";
         byte localAddress;
         // LoRa packets counter
         int helloCounter;
