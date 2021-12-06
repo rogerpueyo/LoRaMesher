@@ -30,6 +30,7 @@ LoraMesher::~LoraMesher(){
   vTaskDelete(ReceivePacket_TaskHandle);
   radio->clearDio0Action();
   radio->reset();
+  
 }
 
 void LoraMesher::initializeNetwork(){
@@ -103,7 +104,7 @@ void LoraMesher::sendHelloPacket() {
     Log.trace(F("Sending HELLO packet %d" CR), helloCounter);
     radio->clearDio0Action(); //For some reason, while transmitting packets, the interrupt pin is set with a ghost packet
     packet tx;
-    int resdata;
+    int resdata = 0;
     tx.dst = broadcastAddress;
     tx.src = localAddress;
     tx.type = HELLO_P;
@@ -126,7 +127,13 @@ void LoraMesher::sendHelloPacket() {
     }
     else{
       Log.trace("HELLO packet sended" CR);
-     resdata = minetwork -> doPostDataPacket((String)tx.dst,(String)tx.src,(String)tx.type,(String)tx.payload,(String)tx.sizExtra,(String*)tx.address,(String*)tx.metric);
+      //resdata = minetwork -> doPostDataPacket(tx.dst,tx.src,tx.type,tx.payload,tx.sizExtra,tx.address,tx.metric);
+        resdata = minetwork ->doGetTest();
+        if(resdata != -1 ){
+          //Log.trace(F(" Hello Data get done successfully with value %d" CR),resdata);
+        }else{
+          Log.trace(F(" Error sending hello data to the server" CR));
+        }
     }
     helloCounter++;
 
@@ -145,7 +152,8 @@ void LoraMesher::sendDataPacket() {
 
   Log.trace(F("Sending DATA packet %d" CR), dataCounter);
   radio->clearDio0Action(); //For some reason, while transmitting packets, the interrupt pin is set with a ghost packet
-  int resdata;
+  int resdata=0;
+  uint8_t dummy = 0;
   packet tx;
   tx.dst = broadcastAddress;
   tx.src = localAddress;
@@ -159,8 +167,13 @@ void LoraMesher::sendDataPacket() {
   }
   else{
     Log.trace("Data packet sended" CR);
-    resdata = minetwork -> doPostDataPacket((String)tx.dst,(String)tx.src,(String)tx.type,(String)tx.payload,"0",NULL,NULL);
-   
+    //resdata = minetwork -> doGetTest();
+    //resdata = minetwork -> doPostDataPacket(tx.dst,tx.src,tx.type,tx.payload,dummy,NULL,NULL);
+   if(resdata != -1 ){
+          Log.trace(F("  Data sent successfully with value %d" CR),resdata);
+        }else{
+          Log.trace(F(" Error sending  data to the server" CR));
+        }
   }
 
   dataCounter++;
@@ -282,7 +295,7 @@ uint8_t LoraMesher::getLocalAddress(){
 }
 
 void LoraMesher::addNeighborToRoutingTable(byte neighborAddress, int helloID) {
-
+  int resdata=0;
   for (int i = 0; i < RTMAXSIZE; i++) {
     if ( routingTable[i].address == 0) {
       routingTable[i].address = neighborAddress;
@@ -291,7 +304,13 @@ void LoraMesher::addNeighborToRoutingTable(byte neighborAddress, int helloID) {
       routingTable[i].timeout = micros() + routeTimeout;
       routingTable[i].via = localAddress;
       Log.verbose(F("New neighbor added in position %d" CR), i);
-      minetwork -> doPostRoutingTable((String)routingTable[i].address,(String)routingTable[i].metric,(String)routingTable[i].lastSeqNo,(String)routingTable[i].timeout,(String)routingTable[i].via);
+      //resdata = minetwork -> doGetTest();
+      //resdata = minetwork -> doPostRoutingTable(routingTable[i].address,routingTable[i].metric,routingTable[i].lastSeqNo,routingTable[i].timeout,routingTable[i].via);
+      if(resdata != -1 ){
+          Log.trace(F(" neighbour data get done successfully with value %d" CR),resdata);
+        }else{
+          Log.trace(F(" Error sending neighbour data get to the server" CR));
+        }
       break;
 
     }

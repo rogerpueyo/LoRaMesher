@@ -104,8 +104,11 @@ class LoraMesher{
         
         Network* minetwork;
         routableNode routingTable[RTMAXSIZE];
-        const char* host  = "192.168.1.60:40350/send_DataPacket";
-        const char* host2 = "192.168.1.60:4035/send_RoutingTable";
+        const String host  = "http://192.168.1.60:8080/send_DataPacket";
+        const String host2 = "http://192.168.1.60:8080/send_RoutingTable";
+
+       // const char* host = "192.168.41.159:8080/send_DataPacket";
+        //const char* host2 = "192.168.41.159:8080/send_RoutingTable";
         byte localAddress;
         // LoRa packets counter
         int helloCounter;
