@@ -100,10 +100,12 @@ void setup() {
 void loop() {
     for (;;) {
         // Log.trace(F("Send packet %d" CR), dataCounter);
-        helloPacket->counter = dataCounter++;
+        if (radio->getLocalAddress() == 0x63AC) {
+            helloPacket->counter = dataCounter++;
 
-        //Create packet and send it.
-        radio->createPacketAndSend(0x62D8, helloPacket, 1);
+            //Create packet and send it.
+            radio->createPacketAndSend(0x62D8, helloPacket, 1);
+        }
 
         //Wait 10 seconds to send the next packet
         vTaskDelay(10000 / portTICK_PERIOD_MS);
