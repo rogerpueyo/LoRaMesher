@@ -9,6 +9,9 @@ LoraMesher::LoraMesher(void (*func)(void*)) {
   initializeLoRa();
   initializeScheduler(func);
 
+  //For testing pourpose only
+  createTestingRoutingTable();
+
   delay(1000);
   Log.verbose(F("Initialization DONE, starting receiving packets..." CR));
   int res = radio->startReceive();
@@ -300,7 +303,9 @@ void LoraMesher::processPackets() {
           isDataPacket = true;
           Log.trace(F("Data packet from %X, destiny %X, via %X" CR), rx->packet->src, rx->packet->dst, ((LoraMesher::dataPacket<uint32_t>*) (&rx->packet->payload))->via);
         case PAYLOADONLY_P:
-          if (rx->packet->dst == localAddress) {
+
+          //TODO: The second AND is only for the pourpose of testing the via
+          if (rx->packet->dst == localAddress && (((LoraMesher::dataPacket<uint32_t>*) (&rx->packet->payload))->via) == localAddress) {
             Log.trace(F("Data packet from %X for me" CR), rx->packet->src);
             userNotify = true;
           }
@@ -496,6 +501,45 @@ void LoraMesher::printRoutingTable() {
       routingTable[i].networkNode.address,
       routingTable[i].via,
       routingTable[i].networkNode.metric);
+}
+
+void LoraMesher::createTestingRoutingTable() {
+  LoraMesher::networkNode* node = new networkNode();
+  switch (localAddress) {
+    case 0x63AC:
+      node->address = 0xC5FC;
+      node->metric = 1;
+      addNodeToRoutingTable(node, 0xC5FC);
+
+      node->address = 0x62D8;
+      node->metric = 2;
+      addNodeToRoutingTable(node, 0xC5FC);
+      break;
+
+    case 0xC5FC:
+      node->address = 0x63AC;
+      node->metric = 1;
+      addNodeToRoutingTable(node, 0x63AC);
+
+      node->address = 0x62D8;
+      node->metric = 1;
+      addNodeToRoutingTable(node, 0x62D8);
+      break;
+
+    case 0x62D8:
+      node->address = 0xC5FC;
+      node->metric = 1;
+      addNodeToRoutingTable(node, 0xC5FC);
+
+      node->address = 0x63AC;
+      node->metric = 2;
+      addNodeToRoutingTable(node, 0xC5FC);
+      break;
+  }
+
+  delete node;
+
+  printRoutingTable();
 }
 
 /**

@@ -103,7 +103,7 @@ void loop() {
         helloPacket->counter = dataCounter++;
 
         //Create packet and send it.
-        radio->createPacketAndSend(BROADCAST_ADDR, helloPacket, 1);
+        radio->createPacketAndSend(0x62D8, helloPacket, 1);
 
         //Wait 10 seconds to send the next packet
         vTaskDelay(10000 / portTICK_PERIOD_MS);

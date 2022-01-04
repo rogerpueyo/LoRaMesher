@@ -400,6 +400,14 @@ private:
    */
   void addNodeToRoutingTable(LoraMesher::networkNode* node, uint16_t via);
 
+
+  /**
+   * @brief Create a Testing Routing Table
+   * The objective of this function is to test the via functionality of the library
+   *
+   */
+  void createTestingRoutingTable();
+
   /**
    * @brief Create a Routing Packet adding the routing table to the payload
    *
