@@ -13,7 +13,7 @@ LoraMesher::LoraMesher(void (*func)(void*)) {
   createTestingRoutingTable();
 
   delay(1000);
-  Log.verbose(F("Initialization DONE, starting receiving packets ..." CR));
+  Log.verbose(F("Initialization    DONE, starting receiving packets ..." CR));
   int res = radio->startReceive();
   if (res != 0)
     Log.error(F("Receiving on constructor gave error: %d" CR), res);
