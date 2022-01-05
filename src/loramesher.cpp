@@ -44,7 +44,7 @@ void LoraMesher::initializeLocalAddress() {
 }
 
 void LoraMesher::initializeLoRa() {
-  Log.trace(F("LoRa module initialization..." CR));
+  Log.trace(F("LoRa   module initialization..." CR));
 
   // TODO: Optimize memory, this could lead to heap fragmentation
   Log.verbose(F("Initializing Radiolib" CR));
