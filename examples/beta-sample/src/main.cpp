@@ -88,9 +88,15 @@ void setupLoraMesher() {
 
 uint16_t getRandomNodeAddress() {
     int routingSize = radio->routingTableSize();
-    int randomNum = radio->radio->random(routingSize + 1);
+    if (routingSize == 0)
+        return 0;
 
-    return radio->routingTable[randomNum].networkNode.address;
+    int randomNum = radio->radio->random() % (routingSize);
+    Log.trace(F("Random Num: %d" CR), randomNum);
+
+    uint16_t address = radio->routingTable[randomNum].networkNode.address;
+    Log.trace(F("Random address: %X" CR), address);
+    return address;
 }
 
 
@@ -106,11 +112,15 @@ void setup() {
 
 void loop() {
     for (;;) {
+        int randomAddress = getRandomNodeAddress();
+        if (randomAddress == 0)
+            continue;
         // Log.trace(F("Send packet %d" CR), dataCounter);
         helloPacket->counter = dataCounter++;
 
+
         //Create packet and send it.
-        radio->createPacketAndSend(getRandomNodeAddress(), helloPacket, 1);
+        radio->createPacketAndSend(randomAddress, helloPacket, 1);
 
         //Wait 10 seconds to send the next packet
         vTaskDelay(10000 / portTICK_PERIOD_MS);
