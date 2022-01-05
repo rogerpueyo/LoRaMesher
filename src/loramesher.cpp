@@ -13,7 +13,7 @@ LoraMesher::LoraMesher(void (*func)(void*)) {
   createTestingRoutingTable();
 
   delay(1000);
-  Log.verbose(F("Init    DONE,     starting receiving packets ..." CR));
+  Log.verbose(F("Init DONE, starting receiving packets..." CR));
   int res = radio->startReceive();
   if (res != 0)
     Log.error(F("Receiving on constructor gave error: %d" CR), res);
@@ -40,11 +40,11 @@ void LoraMesher::initializeLocalAddress() {
   WiFi.macAddress(WiFiMAC);
   localAddress = (WiFiMAC[4] << 8) | WiFiMAC[5];
 
-  Log.notice(F("Local   LoRa    address (from WiFi MAC): %X" CR), localAddress);
+  Log.notice(F("Local LoRa address (from WiFi MAC): %X" CR), localAddress);
 }
 
 void LoraMesher::initializeLoRa() {
-  Log.trace(F("LoRa   module initialization..." CR));
+  Log.trace(F("LoRa module initialization..." CR));
 
   // TODO: Optimize memory, this could lead to heap fragmentation
   Log.verbose(F("Initializing Radiolib" CR));
