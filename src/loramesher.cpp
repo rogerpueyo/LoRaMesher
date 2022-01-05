@@ -263,7 +263,7 @@ void LoraMesher::sendHelloPacket() {
     packet<networkNode>* tx = createRoutingPacket();
     setPackedForSend(tx, DEFAULT_PRIORITY + 1, DEFAULT_TIMEOUT);
 
-    //Wait for 60s to send the next hello packet
+    //Wait for 10s to send the next hello packet
     vTaskDelay(10000 / portTICK_PERIOD_MS);
   }
 }

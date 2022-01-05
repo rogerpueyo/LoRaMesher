@@ -86,6 +86,13 @@ void setupLoraMesher() {
     Serial.println("Lora initialized");
 }
 
+uint16_t getRandomNodeAddress() {
+    int routingSize = radio->routingTableSize();
+    int randomNum = radio->radio->random(routingSize + 1);
+
+    return radio->routingTable[randomNum].networkNode.address;
+}
+
 
 void setup() {
     Serial.begin(115200);
@@ -103,7 +110,7 @@ void loop() {
         helloPacket->counter = dataCounter++;
 
         //Create packet and send it.
-        radio->createPacketAndSend(BROADCAST_ADDR, helloPacket, 1);
+        radio->createPacketAndSend(getRandomNodeAddress(), helloPacket, 1);
 
         //Wait 10 seconds to send the next packet
         vTaskDelay(10000 / portTICK_PERIOD_MS);

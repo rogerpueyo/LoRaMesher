@@ -114,6 +114,14 @@ public:
    */
   ~LoraMesher();
 
+
+  /**
+   * @brief Routing Table (Automatically filled by the loraMesher)
+   * !Important Do not modify it if you do not want to break it
+   *
+   */
+  routableNode routingTable[RTMAXSIZE];
+
   /**
    * @brief Prints the actual routing table in the log
    *
@@ -314,10 +322,7 @@ public:
 
   LoraMesher::PacketQueue* ReceivedUserPackets = new PacketQueue();
 
-private:
-
-  PacketQueue* ReceivedPackets = new PacketQueue();
-  PacketQueue* ToSendPackets = new PacketQueue();
+  SX1276* radio;
 
 #pragma pack(push, 1)
   struct networkNode {
@@ -332,8 +337,12 @@ private:
   };
 #pragma pack(pop)
 
-  //Routing table
-  routableNode routingTable[RTMAXSIZE];
+private:
+
+  PacketQueue* ReceivedPackets = new PacketQueue();
+  PacketQueue* ToSendPackets = new PacketQueue();
+
+
   //Local Address
   uint16_t localAddress;
   // Duty cycle end
@@ -343,7 +352,6 @@ private:
   // Routable node timeout (µs)
   unsigned long routeTimeout;
 
-  SX1276* radio;
 
   TaskHandle_t Hello_TaskHandle = NULL;
   TaskHandle_t ReceivePacket_TaskHandle = NULL;
