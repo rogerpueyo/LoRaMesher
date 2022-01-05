@@ -40,7 +40,7 @@ void LoraMesher::initializeLocalAddress() {
   WiFi.macAddress(WiFiMAC);
   localAddress = (WiFiMAC[4] << 8) | WiFiMAC[5];
 
-  Log.notice(F("Local   LoRa address (from WiFi MAC): %X" CR), localAddress);
+  Log.notice(F("Local   LoRa    address (from WiFi MAC): %X" CR), localAddress);
 }
 
 void LoraMesher::initializeLoRa() {
