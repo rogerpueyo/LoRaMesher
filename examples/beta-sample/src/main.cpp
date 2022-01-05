@@ -83,7 +83,7 @@ void setupLoraMesher() {
     //Create a loramesher with a processReceivedPackets function
     radio = new LoraMesher(processReceivedPackets);
 
-    Serial.println("Lora initialized");
+    Serial.println("Lora  initialized");
 }
 
 
