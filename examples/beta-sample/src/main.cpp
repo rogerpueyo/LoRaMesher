@@ -111,18 +111,16 @@ void setup() {
 
 
 void loop() {
-    for (;;) {
-        int randomAddress = getRandomNodeAddress();
-        if (randomAddress == 0)
-            continue;
-        // Log.trace(F("Send packet %d" CR), dataCounter);
-        helloPacket->counter = dataCounter++;
+    int randomAddress = getRandomNodeAddress();
+    if (randomAddress == 0)
+        return;
+    Log.trace(F("Send packet with dataCounter = %d" CR), dataCounter);
+    helloPacket->counter = dataCounter++;
 
 
-        //Create packet and send it.
-        radio->createPacketAndSend(randomAddress, helloPacket, 1);
+    //Create packet and send it.
+    radio->createPacketAndSend(randomAddress, helloPacket, 1);
 
-        //Wait 20 seconds to send the next packet
-        vTaskDelay(20000 / portTICK_PERIOD_MS);
-    }
+    //Wait 20 seconds to send the next packet
+    vTaskDelay(20000 / portTICK_PERIOD_MS);
 }
