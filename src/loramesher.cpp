@@ -78,7 +78,7 @@ void LoraMesher::initializeScheduler(void (*func)(void*)) {
     "Receiving routine",
     4096,
     this,
-    3,
+    4,
     &ReceivePacket_TaskHandle);
   if (res != pdPASS) {
     Log.error(F("Receiving routine creation gave error: %d" CR), res);
@@ -88,7 +88,7 @@ void LoraMesher::initializeScheduler(void (*func)(void*)) {
     "Hello routine",
     4096,
     this,
-    0,
+    2,
     &Hello_TaskHandle);
   if (res != pdPASS) {
     Log.error(F("Process Task creation gave error: %d" CR), res);
@@ -98,7 +98,7 @@ void LoraMesher::initializeScheduler(void (*func)(void*)) {
     "Process routine",
     4096,
     this,
-    0,
+    1,
     &ReceiveData_TaskHandle);
   if (res != pdPASS) {
     Log.error(F("Process Task creation gave error: %d" CR), res);
@@ -108,7 +108,7 @@ void LoraMesher::initializeScheduler(void (*func)(void*)) {
     "Sending routine",
     4096,
     this,
-    1,
+    3,
     &SendData_TaskHandle);
   if (res != pdPASS) {
     Log.error(F("Sending Task creation gave error: %d" CR), res);
@@ -263,8 +263,8 @@ void LoraMesher::sendHelloPacket() {
     packet<networkNode>* tx = createRoutingPacket();
     setPackedForSend(tx, DEFAULT_PRIORITY + 1, DEFAULT_TIMEOUT);
 
-    //Wait for 10s to send the next hello packet
-    vTaskDelay(10000 / portTICK_PERIOD_MS);
+    //Wait for 30s to send the next hello packet
+    vTaskDelay(30000 / portTICK_PERIOD_MS);
   }
 }
 
