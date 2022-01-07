@@ -114,6 +114,20 @@ public:
    */
   ~LoraMesher();
 
+  SX1276* radio;
+
+#pragma pack(push, 1)
+  struct networkNode {
+    uint16_t address = 0;
+    uint8_t metric = 0;
+  };
+
+  struct routableNode {
+    LoraMesher::networkNode networkNode;
+    unsigned long timeout = 0;
+    uint16_t via = 0;
+  };
+#pragma pack(pop)
 
   /**
    * @brief Routing Table (Automatically filled by the loraMesher)
@@ -322,20 +336,6 @@ public:
 
   LoraMesher::PacketQueue* ReceivedUserPackets = new PacketQueue();
 
-  SX1276* radio;
-
-#pragma pack(push, 1)
-  struct networkNode {
-    uint16_t address = 0;
-    uint8_t metric = 0;
-  };
-
-  struct routableNode {
-    LoraMesher::networkNode networkNode;
-    unsigned long timeout = 0;
-    uint16_t via = 0;
-  };
-#pragma pack(pop)
 
 private:
 
